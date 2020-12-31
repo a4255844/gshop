@@ -1,6 +1,7 @@
 const path = require('path')
 const px2rem = require('postcss-px2rem')
-module.exports = {  //只能写vue封装的配置
+module.exports = {
+  //只能写vue封装的配置
 
   // lintOnSave: true, // 关闭EsLint的规则
   css: { // 添加postcss配置
@@ -25,6 +26,7 @@ module.exports = {  //只能写vue封装的配置
       }
     },
   },
+
   devServer: {
     proxy: {
       //配置代理服务器
@@ -38,6 +40,15 @@ module.exports = {  //只能写vue封装的配置
         },
         changeOrigin: true   //支持跨域，如果协议/主机也不相同，必须加上
       },
+    }
+  },
+
+  pluginOptions: {
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: true
     }
   }
 }

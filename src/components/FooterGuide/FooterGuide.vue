@@ -1,54 +1,45 @@
 <template>
   <div class="footer-guide">
-    <spen
-      class="guide-item"
-      :class="{ on: $route.path === '/msite' }"
-      @click="goto('/msite')"
-    >
-      <spen>
+    <span class="guide-item" :class="{ on: $route.path === '/msite' }" @click="goto('/msite')">
+      <span>
         <i class="iconfont iconhome"></i>
-      </spen>
-      <spen>首页</spen>
-    </spen>
-    <spen
-      class="guide-item"
-      :class="{ on: $route.path === '/search' }"
-      @click="goto('/search')"
-    >
-      <spen>
+      </span>
+      <span>{{$t('footer_home')}}</span>
+    </span>
+    <span class="guide-item" :class="{ on: $route.path === '/search' }" @click="goto('/search')">
+      <span>
         <i class="iconfont iconsearch"></i>
-      </spen>
-      <spen>搜索</spen>
-    </spen>
-    <spen
-      class="guide-item"
-      :class="{ on: $route.path === '/order' }"
-      @click="goto('/order')"
-    >
-      <spen>
+      </span>
+      <span>{{$t('footer_search')}}</span>
+    </span>
+    <span class="guide-item" :class="{ on: $route.path === '/order' }" @click="goto('/order')">
+      <span>
         <i class="iconfont icondingdan"></i>
-      </spen>
-      <spen>订单</spen>
-    </spen>
-    <spen
-      class="guide-item"
-      :class="{ on: $route.path === '/profile' }"
-      @click="goto('/profile')"
-    >
-      <spen>
+      </span>
+      <span>{{$t('footer_order')}}</span>
+    </span>
+    <span class="guide-item" :class="{ on: $route.path === '/profile' }" @click="goto('/profile')">
+      <span>
         <i class="iconfont iconuser1"></i>
-      </spen>
-      <spen>我的</spen>
-    </spen>
+      </span>
+      <span>{{$t('footer_own')}}</span>
+    </span>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name : "FooterGuide",
-  methods:{
-    goto(path) { //编程式路由跳转
-      this.$router.replace(path)
+  name: "FooterGuide",
+  methods: {
+    //编程式路由跳转
+    //解决重复点击报错的问题
+    // 方案1：进行判断，如果点击项不同在进行跳转
+    goto(path) {
+      if (path !== this.$route.path) {
+        this.$router.replace(path)
+      } else { //方案2：如果点击项相同，刷新界面
+        window.location = path  //发送一般的http请求==>整个界面会刷新显示
+      }
     }
   }
 
@@ -65,6 +56,7 @@ export default {
     bottom 0
     width 100%
     height 50px
+    background #fff
     .guide-item
       display flex
       flex 1
