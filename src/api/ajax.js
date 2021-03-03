@@ -8,7 +8,7 @@
 */
 import axios from "axios"
 import qs from "qs" //webpack自带的把json参数转换为urlencode的格式的库，
-import { Indicator } from "mint-ui" //按需引入mint-ui
+import { Indicator, Toast, MessageBox } from "mint-ui" //按需引入mint-ui
 
 import router from '@/router'
 import store from '@/vuex/store'
@@ -31,7 +31,7 @@ instance.interceptors.request.use((config) => {
   }
   //携带token的方式：1、cookie  2、请求参数 3、请求头[authorization]
   // 请求头是目前比较流行的携带token的方式
-  const token = store.state.token //从vuex内取出token
+  const token = store.state.user.token //从vuex内取出token
   if (token) {          //进行判断，如果有，保存到请求头authorization属性中
     config.headers['authorization'] = token
   } else {            //如果没有
@@ -52,20 +52,21 @@ instance.interceptors.response.use(
   // 1. 统一处理请求异常
   (error) => {
     Indicator.close() //mint-ui提示框，在响应时关闭
-    alert("请求出错" + error.message)
+    MessageBox.alert('请求出错！' + error.message, '提示')
     if (!error.response) {//如果不是服务器响应的报错
       if (router.currentRoute.path !== '/login') {
         router.replace('/login') //直接跳转到login
       }
     } else if (error.response.status === 401) {
-      alert('token已过期，重新登陆')
+      Toast('token已过期，重新登陆')
       if (router.currentRoute.path !== '/login') {
+        store.dispatch('logout') //清除用户数据，重新登陆
         router.replace('/login') //直接跳转到login
       }
     } else if (error.response.status === 404) {
-      alert('请求资源未找到')
+      Toast('请求资源未找到')
     } else {
-      alert('请求出错')
+      Toast('请求出错')
     }
     return new Promise(() => { }) //返回一个pending状态的promise,中断promise链
   }

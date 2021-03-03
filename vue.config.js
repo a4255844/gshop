@@ -2,8 +2,8 @@ const path = require('path')
 const px2rem = require('postcss-px2rem')
 module.exports = {
   //只能写vue封装的配置
-
-  // lintOnSave: true, // 关闭EsLint的规则
+  // runtimeCompiler: true, //使用包含编译器的vue包
+  lintOnSave: false, // 关闭EsLint的规则
   css: { // 添加postcss配置
     loaderOptions: {
       postcss: {

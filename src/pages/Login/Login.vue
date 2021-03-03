@@ -65,6 +65,7 @@
 
 <script type="text/ecmascript-6">
 // import { reqSendCode } from '@/api'
+import { Toast } from 'mint-ui'
 export default {
   name: "Login",
   data() {
@@ -108,15 +109,14 @@ export default {
         "http://localhost:4000/captcha?time=" + Date.now();
     },
     async login() { //对表单进行验证：前端验证
-      const { isShowMsm, phone, code, userName, pwd, captcha } = this
       const names = this.isShowMsm ? ['phone', 'code'] : ['userName', 'pwd', 'captcha'] //根据当前表单项进行筛选
       //默认对所有表单进行验证,如果传入一个名为names的数组则指定验证
       let success = await this.$validator.validateAll(names)
       let result
       if (success) { //前端验证成功
+        const { isShowMsm, phone, code, userName, pwd, captcha } = this
         if (isShowMsm) { //判断用户当前所在页面：手机验证
           result = await this.$API.reqPhoneWithLogin({ phone, code })
-          console.log(result);
           if (result.code === 1) { //如果失败提示验证码错误
             alert('验证码错误！')
           }
@@ -132,9 +132,10 @@ export default {
       }
       //登录成功统一走这里
       if (result.code === 0) {
-        console.log(result)
-        alert('登陆成功')
-
+        Toast({
+          message: '登陆成功',
+          position: 'top'
+        })
         //将用户信息保存至vuex
         this.$store.dispatch('getUserInfo', result.data)
         this.$router.replace('/profile') //跳转路由
@@ -147,6 +148,22 @@ export default {
       localStorage.setItem('locale_key', locale)
     }
   },
+
+  /* 
+    在当前组件对象被创建前调用，不能直接访问this(不是组件对象)
+    但可以通过next(component => {}),再回调函数中访问组件对象
+  */
+  beforeRouteEnter(to, from, next) {
+    next(comp => {  //回调函数在组件对象创建后回调执行，并且把当前组件对象传入回调函数
+      const token = comp.$store.state.user.token
+      //如果已经登录强制跳转到个人中心，没有登陆则放行
+      if (token) {
+        next('/profile')
+      } else {
+        next()
+      }
+    })
+  }
 
 };
 </script>

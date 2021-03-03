@@ -176,3 +176,6 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* html{
+  touch-action: none;
+  } */

@@ -1,11 +1,6 @@
 s<template>
-  <div class="star star-24">
-    <span
-      class="star-item"
-      :class="star"
-      v-for="(star, index) in starsClasses"
-      :key="index"
-    ></span>
+  <div class="star" :class="'star-'+ size">
+    <span class="star-item" :class="star" v-for="(star, index) in starsClasses" :key="index"></span>
   </div>
 </template>
 
@@ -14,9 +9,14 @@ export default {
   props: {
     rating: {
       type: Number,
-      required: true,
+      required: false,
       default: 5,
     },
+    size: {
+      type: Number,
+      required: false,
+      default: 24
+    }
   },
   computed: {
     /* 定义一个生成stars类名的数组

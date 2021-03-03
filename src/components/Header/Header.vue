@@ -13,9 +13,9 @@
 <script type="text/ecmascript-6">
 export default {
   // props : ['title']
-   props: {
-     title : String
-   },
+  props: {
+    title: String
+  },
 
 }
 </script>
@@ -24,6 +24,7 @@ export default {
 @import '../../assets/stylus/mixins.styl'
 .header
   position fixed !important
+  display flex
   left 0
   top 0
   z-index 100
@@ -41,9 +42,9 @@ export default {
   .header-middle
     position absolute
     top 50%
-    left 15%
-    transform translateY(-50%)
-    width 58%
+    left 50%
+    transform translate(-50%,-50%)
+    width 50%
     color #fff
     font-size 20px
     text-align center
